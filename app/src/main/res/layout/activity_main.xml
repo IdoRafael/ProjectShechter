@@ -10,27 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/app_name"
-            android:id="@+id/textView" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button13"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
-
-    </RelativeLayout>
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -44,199 +23,70 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="0.60">
+            android:layout_weight="1">
 
             <WebView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/camera"
                 android:layout_gravity="center_vertical" />
+
         </FrameLayout>
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.35">
+            android:layout_weight="1">
 
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/t_l_a_t_mode"
-                android:id="@+id/buttonTlatMode"
-                android:layout_gravity="center_horizontal"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true" />
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
-
-                <com.jmedeisis.bugstick.Joystick
-                    android:id="@+id/joystick"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_base"
-                    app:start_on_first_touch="true"
-                    app:force_square="true"
-                    app:motion_constraint="None"
-                    android:layout_gravity="bottom">
-
-                    <Button
-                        android:layout_width="@dimen/stick_size"
-                        android:layout_height="@dimen/stick_size"
-                        android:background="@drawable/bg_stick" />
-
-                </com.jmedeisis.bugstick.Joystick>
+            <TabHost
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/tabHostControls">
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:orientation="horizontal"
+                    <TabWidget
+                        android:id="@android:id/tabs"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
+                        android:layout_height="wrap_content"></TabWidget>
 
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/minus"
-                            android:id="@+id/T0_Minus"
-                            android:layout_weight="1" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/plus"
-                            android:id="@+id/T0_Plus"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
+                    <FrameLayout
+                        android:id="@android:id/tabcontent"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
+                        android:layout_height="match_parent">
 
-                        <Button
-                            android:layout_width="0dp"
+                        <com.jmedeisis.bugstick.Joystick
+                            android:id="@+id/joystick"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_base"
+                            app:start_on_first_touch="true"
+                            app:force_square="true"
+                            app:motion_constraint="None"
+                            android:layout_gravity="bottom|center">
+
+                            <Button
+                                android:layout_width="@dimen/stick_size"
+                                android:layout_height="@dimen/stick_size"
+                                android:background="@drawable/bg_stick" />
+
+                        </com.jmedeisis.bugstick.Joystick>
+
+                        <ImageView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/minus"
-                            android:id="@+id/button"
-                            android:layout_weight="1" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/plus"
-                            android:id="@+id/button2"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/minus"
-                            android:id="@+id/button3"
-                            android:layout_weight="1" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/plus"
-                            android:id="@+id/button4"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/minus"
-                            android:id="@+id/button5"
-                            android:layout_weight="1" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/plus"
-                            android:id="@+id/button6"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/minus"
-                            android:id="@+id/button7"
-                            android:layout_weight="1" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/plus"
-                            android:id="@+id/button8"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/minus"
-                            android:id="@+id/button9"
-                            android:layout_weight="1" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/plus"
-                            android:id="@+id/button10"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/minus"
-                            android:id="@+id/button11"
-                            android:layout_weight="1" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/plus"
-                            android:id="@+id/button12"
-                            android:layout_weight="1" />
-                    </LinearLayout>
+                            android:id="@+id/tlatControlsTemp"
+                            android:layout_gravity="bottom|center"
+                            android:src="@drawable/tlat_controls" />
+                    </FrameLayout>
                 </LinearLayout>
-            </FrameLayout>
+            </TabHost>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
