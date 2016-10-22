@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,50 +14,77 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:baselineAligned="false"
         android:id="@+id/linearLayout">
 
         <FrameLayout
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1">
+            android:layout_weight="0.4">
 
             <WebView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/camera"
-                android:layout_gravity="center_vertical" />
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal">
+
+                <ImageButton
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttonRefresh"
+                    android:layout_gravity="left"
+                    android:src="@drawable/refresh"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/editTextSetIP"
+                    android:hint="@string/edit_text_set_ip_hint"
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_weight="1" />
+
+            </LinearLayout>
 
         </FrameLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
 
-            <TabHost
+        <TabHost
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tabHostControls"
+            android:layout_weight="0.6">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/tabHostControls">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <TabWidget
+                    android:id="@android:id/tabs"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"></TabWidget>
 
-                    <TabWidget
-                        android:id="@android:id/tabs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></TabWidget>
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    <FrameLayout
-                        android:id="@android:id/tabcontent"
+                    <LinearLayout
+                        android:id="@+id/joystickLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="bottom">
 
                         <com.jmedeisis.bugstick.Joystick
                             android:id="@+id/joystick"
@@ -67,27 +94,47 @@
                             app:start_on_first_touch="true"
                             app:force_square="true"
                             app:motion_constraint="None"
-                            android:layout_gravity="bottom|center">
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:layout_marginTop="3mm">
 
                             <Button
                                 android:layout_width="@dimen/stick_size"
                                 android:layout_height="@dimen/stick_size"
-                                android:background="@drawable/bg_stick" />
+                                android:background="@drawable/bg_stick"
+                                android:allowUndo="false" />
 
                         </com.jmedeisis.bugstick.Joystick>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/tlatLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom">
 
                         <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/tlatControlsTemp"
-                            android:layout_gravity="bottom|center"
-                            android:src="@drawable/tlat_controls" />
-                    </FrameLayout>
-                </LinearLayout>
-            </TabHost>
+                            android:layout_height="match_parent"
+                            android:id="@+id/tlat_controls_invisible_front_view"
+                            android:src="@drawable/tlat_controls_invisible_colors" />
 
-        </LinearLayout>
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/tlat_controls_background_view"
+                            android:src="@drawable/tlat_controls_background" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/tlat_pressed_controls_view"
+                            android:visibility="invisible" />
+                    </FrameLayout>
+
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
 
     </LinearLayout>
 
-</RelativeLayout>
+</FrameLayout>

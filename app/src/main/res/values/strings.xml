@@ -2,9 +2,11 @@
     <string name="app_name">Project S.H.E.C.H.T.E.R.</string>
     <string name="tlat_mode">Tlat Mode</string>
     <string name="driving_mode">Driving Mode</string>
-    <string name="minus">-</string>
-    <string name="plus">+</string>
     <string name="connect">Connect</string>
-    <string name="connecting">Connecting</string>
-    <string name="connected">Connected</string>
+    <string name="exit">Exit</string>
+    <string name="stay">Stay</string>
+    <string name="connection_error">Connection failed.\nTry to reconnect, or exit the application.</string>
+    <string name="vertical_ellipsis">&#8942;</string>
+    <string name="edit_text_set_ip_hint">Type your camera\'s IP here</string>
+
 </resources>
