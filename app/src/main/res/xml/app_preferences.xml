@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/bluetooth_title">
+
+        <EditTextPreference
+            android:defaultValue="@string/bluetooth_mac_default"
+            android:key="@string/bluetooth_mac_key"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/bluetooth_mac_title" />
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/bluetooth_list_entries"
+            android:entryValues="@array/bluetooth_list_entry_values"
+            android:key="@string/paired_devices_list_key"
+            android:summary="@string/paired_devices_summary"
+            android:title="@string/paired_devices_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/camera_title">
+        <EditTextPreference
+            android:defaultValue="@string/camera_url_default"
+            android:key="@string/camera_url_key"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/url_title" />
+
+        <EditTextPreference
+            android:defaultValue="@string/camera_username_default"
+            android:key="@string/camera_username_key"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/username_title" />
+        <EditTextPreference
+            android:defaultValue="@string/camera_password_default"
+            android:key="@string/camera_password_key"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/password_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="@string/theme_category_key"
+        android:title="@string/theme_title">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/dark_theme_key"
+            android:title="@string/dark_theme_title" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/theme_changed_key" />
+    </PreferenceCategory>
+</PreferenceScreen>

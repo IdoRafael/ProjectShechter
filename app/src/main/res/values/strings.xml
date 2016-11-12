@@ -5,8 +5,53 @@
     <string name="connect">Connect</string>
     <string name="exit">Exit</string>
     <string name="stay">Stay</string>
-    <string name="connection_error">Connection failed.\nTry to reconnect, or exit the application.</string>
+    <string name="connection_error_title">Connection failed</string>
+    <string name="connection_error_message">Try to reconnect, setup your connection via Settings or exit the application.</string>
+    <string name="bluetooth_disabled_title">Bluetooth Disabled</string>
+    <string name="bluetooth_disabled_message">Enable bluetooth or exit the application.</string>
+    <string name="enable">Enable</string>
     <string name="vertical_ellipsis">&#8942;</string>
     <string name="edit_text_set_ip_hint">Type your camera\'s IP here</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="settings_button">Settings</string>
 
+    <!-- Strings related to Settings -->
+    <!-- Titles -->
+    <string name="camera_title">Camera</string>
+    <string name="url_title">URL</string>
+    <string name="username_title">Username</string>
+    <string name="password_title">Password</string>
+    <string name="theme_title">Theme</string>
+    <string name="dark_theme_title">Dark</string>
+    <string name="bluetooth_title">Bluetooth</string>
+    <string name="paired_devices_title">Paired Devices</string>
+    <string name="bluetooth_mac_title">MAC</string>
+    <!-- Summaries -->
+    <string name="paired_devices_summary">Choose from paired devices</string>
+    <!-- Keys -->
+    <string name="dark_theme_key">darkTheme</string>
+    <string name="bluetooth_mac_key">bluetoothMac</string>
+    <string name="paired_devices_list_key">pairedDevicesList</string>
+    <string name="camera_url_key">cameraUrl</string>
+    <string name="camera_username_key">cameraUsername</string>
+    <string name="camera_password_key">cameraPassword</string>
+    <string name="theme_changed_key">themeChanged</string>
+    <string name="theme_category_key">themeCategory</string>
+    <!-- Default Values -->
+    <string name="bluetooth_mac_default">98:D3:31:F4:06:76</string>
+    <string name="camera_url_default">http://192.168.43.74:81</string>
+    <string name="camera_username_default">admin</string>
+    <string name="camera_password_default"></string>
+
+    <string name="no_device">No Device</string>
+    <string name="invalid_bt_mac">Invalid Bluetooth MAC Address</string>
+
+    <string-array name="bluetooth_list_entries">
+        <item>@string/no_device</item>
+    </string-array>
+
+    <string-array name="bluetooth_list_entry_values">
+        <item>@string/invalid_bt_mac</item>
+    </string-array>
+    <!-- Strings related to Settings -->
 </resources>
