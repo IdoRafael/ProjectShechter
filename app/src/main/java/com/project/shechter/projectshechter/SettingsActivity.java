@@ -23,6 +23,8 @@ import java.util.Set;
 
 
 public class SettingsActivity extends AppCompatActivity {
+    static final int MAX_ZOOM = 1000;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class SettingsFragment extends PreferenceFragment {
-
         EditTextPreference bluetooth_mac;
         ListPreference bluetooth_list;
         BluetoothAdapter m_bluetooth_adapter;
@@ -50,6 +51,8 @@ public class SettingsActivity extends AppCompatActivity {
         EditTextPreference camera_password;
         SwitchPreference dark_theme;
         SwitchPreference theme_changed;
+        EditTextPreference camera_zoom_portrait;
+        EditTextPreference camera_zoom_landscape;
 
         BroadcastReceiver mReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
@@ -111,6 +114,47 @@ public class SettingsActivity extends AppCompatActivity {
             camera_password = (EditTextPreference) findPreference(getString(R.string.camera_password_key));
             camera_password.setSummary(camera_password.getText());
             camera_password.setOnPreferenceChangeListener(edit_text_preference_change_listener);
+
+            Preference.OnPreferenceChangeListener zoom_preference_change_listener = new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    String text = o.toString();
+                    Integer zoom;
+                    boolean res;
+
+                    if(text.equals("")) {
+                        text = getString(R.string.camera_zoom_default);
+                        res = false;
+                    } else {
+                        //catch in case of overflow
+                        try {
+                            zoom = Integer.parseInt(text);
+                            if (zoom > MAX_ZOOM) {
+                                zoom = MAX_ZOOM;
+                                res = false;
+                            } else {
+                                res = true;
+                            }
+                        } catch (Exception e) {
+                            zoom = MAX_ZOOM;
+                            res = false;
+                        }
+                        text = zoom.toString();
+                    }
+
+                    ((EditTextPreference)preference).setText(text);
+                    preference.setSummary(text);
+                    return res;
+                }
+            };
+
+            camera_zoom_portrait = (EditTextPreference) findPreference(getString(R.string.camera_zoom_portrait_key));
+            camera_zoom_portrait.setSummary(camera_zoom_portrait.getText());
+            camera_zoom_portrait.setOnPreferenceChangeListener(zoom_preference_change_listener);
+
+            camera_zoom_landscape = (EditTextPreference) findPreference(getString(R.string.camera_zoom_landscape_key));
+            camera_zoom_landscape.setSummary(camera_zoom_landscape.getText());
+            camera_zoom_landscape.setOnPreferenceChangeListener(zoom_preference_change_listener);
 
             theme_changed = (SwitchPreference) findPreference(getString(R.string.theme_changed_key));
             ((PreferenceCategory) findPreference(getString(R.string.theme_category_key))).removePreference(theme_changed);

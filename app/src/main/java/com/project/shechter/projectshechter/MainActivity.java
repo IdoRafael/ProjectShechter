@@ -41,33 +41,36 @@ import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 
 public class MainActivity extends AppCompatActivity {
-    static final int RESULT_SETTINGS = 1;
-    //TODO IDO REMOVE ALL DEBUGS
-    static final String POPUP_IS_ON = "popupIsOnState";
-    static final long VIBRATE_DURATION = 55;
-    static final byte[] JOYSTICK_ORIGIN = ("H" + String.format("%+04d", 0)
-            + "V" + String.format("%+04d", 0)
-            + "E" + Character.toString(checkNumJoystick(0))).getBytes();
-    //Preferences ========================================
-    static final long BLUETOOTH_INTERVAL = 70;
-    static final String TLAT_ORIGIN_STRING = "+6";
-    static final int TLAT_PLUS_MINUS_INDEX = 0;
-    static final int TLAT_DRIVER_INDEX = 1;
-    static final int TLAT_BUTTON_AMOUNT = 6;
 
-    //Bluetooth ========================================
-    static final byte[] TLAT_ORIGIN = ("T" + TLAT_ORIGIN_STRING
-            + "E" + Character.toString(checkNumTlat(TLAT_ORIGIN_STRING))).getBytes();
     //TODO IDO REMOVE ALL DEBUGS
     private static final boolean DEBUG = true;
-    private static final String STATE_TAB_HOST = "tabHostState";
+    //TODO IDO REMOVE ALL DEBUGS
+
+
     //Camera ==================================================
     static String camera_url = "http://192.168.43.74:81";
+    static String camera_username = "admin";
+    static String camera_password = "";
+    static final int CAMERA_BUTTON_ALPHA = 150;
+    static final int CAMERA_BUTTON_INTERVAL = 100;
+    WebView camera;
+    ImageButton camera_button_refresh;
+    ImageButton camera_button_up;
+    ImageButton camera_button_down;
+    ImageButton camera_button_left;
+    ImageButton camera_button_right;
+    //Camera ==================================================
+
+
     //Preferences ========================================
     Button settings_button;
     SharedPreferences settings;
-    //Vibrator =============================
+    static final int RESULT_SETTINGS = 1;
+    //Preferences ========================================
+
+
     //Bluetooth ========================================
+    static final String POPUP_IS_ON = "popupIsOnState";
     BluetoothAdapter m_bluetooth_adapter;
     ConnectedThread bluetooth_thread;
     boolean popup_is_on = false;
@@ -83,24 +86,41 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-    //Camera ==================================================
-    WebView camera;
-    ImageButton camera_button_refresh;
+    //Bluetooth ========================================
+
+
     //Vibrator =============================
+    static final long VIBRATE_DURATION = 55;
     Vibrator vibrator;
     boolean has_vibrator;
+    //Vibrator =============================
+
+
     //Controls ===============
+    static final long BLUETOOTH_INTERVAL = 70;
+    private static final String STATE_TAB_HOST = "tabHostState";
     TabHost tab_host_controls;
+
     //Joystick ===========================================================
+    static final byte[] JOYSTICK_ORIGIN = ("H" + String.format("%+04d", 0)
+            + "V" + String.format("%+04d", 0)
+            + "E" + Character.toString(checkNumJoystick(0))).getBytes();
     Joystick joystick;
-    //Joystick ===========================================================
     int joystick_x,
             joystick_y;
     long previous_joystick_tick;
     boolean joystick_busy;
     Runnable write_joystick_origins;
     Handler joystick_handler;
+    //Joystick ===========================================================
+
     //Tlat ============================================================================
+    static final String TLAT_ORIGIN_STRING = "+6";
+    static final int TLAT_PLUS_MINUS_INDEX = 0;
+    static final int TLAT_DRIVER_INDEX = 1;
+    static final int TLAT_BUTTON_AMOUNT = 6;
+    static final byte[] TLAT_ORIGIN = ("T" + TLAT_ORIGIN_STRING
+            + "E" + Character.toString(checkNumTlat(TLAT_ORIGIN_STRING))).getBytes();
     ImageView tlat_controls;
     ImageView tlat_pressed_controls;
     String tlat_string;
@@ -114,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
     Bitmap tlat_bitmap;
     boolean tlat_initiated = false;
     //Tlat ============================================================================
-
     //Controls ===============
 
     static private char checkNumJoystick(int i) {
@@ -154,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
         init(savedInstanceState);
 
-        updateOnBackFromSettings();
+        updateFromPreferences(false);
 
         if (savedInstanceState != null) {
             popup_is_on = savedInstanceState.getBoolean(POPUP_IS_ON);
@@ -187,6 +206,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -247,7 +271,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void init_camera() {
         camera = (WebView) findViewById(R.id.camera);
+
         camera.getSettings().setJavaScriptEnabled(true);
+
+        //disable touch events
+        camera.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
 
         //disable zoom
         camera.getSettings().setBuiltInZoomControls(false);
@@ -260,25 +293,69 @@ public class MainActivity extends AppCompatActivity {
         camera.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         camera.setScrollbarFadingEnabled(true);
 
+        //prevent picture from getting cut off by webview
         camera.getSettings().setLoadWithOverviewMode(true);
-
         camera.getSettings().setUseWideViewPort(true);
 
-        //set zoom according to current orientation
-        if (getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
-            camera.setInitialScale(170);
-        } else {
-            camera.setInitialScale(180);
-        }
+        camera.setBackgroundColor(Color.TRANSPARENT);
 
-        //init refresh camera button
+        //init camera buttons
         camera_button_refresh = (ImageButton) findViewById(R.id.buttonRefresh);
         camera_button_refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                camera.evaluateJavascript("$($('iframe').contents().find('iframe'))[0].contentWindow.OnPtzMouseDown()", null);
+            updateFromPreferences(false);
             }
         });
+        camera_button_refresh.getBackground().setAlpha(CAMERA_BUTTON_ALPHA);
+
+        camera_button_up = (ImageButton) findViewById(R.id.cameraButtonUp);
+        camera_button_up.setOnTouchListener(new RepeatListener(
+                CAMERA_BUTTON_INTERVAL,
+                CAMERA_BUTTON_INTERVAL,
+                new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                camera.evaluateJavascript("$($('iframe').contents().find('iframe'))[0].contentWindow.OnPtzMouseUp()",null);
+            }
+        }));
+        camera_button_up.getBackground().setAlpha(CAMERA_BUTTON_ALPHA);
+
+        camera_button_down = (ImageButton) findViewById(R.id.cameraButtonDown);
+        camera_button_down.setOnTouchListener(new RepeatListener(
+                CAMERA_BUTTON_INTERVAL,
+                CAMERA_BUTTON_INTERVAL,
+                new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                camera.evaluateJavascript("$($('iframe').contents().find('iframe'))[0].contentWindow.OnPtzMouseDown()",null);
+            }
+        }));
+        camera_button_down.getBackground().setAlpha(CAMERA_BUTTON_ALPHA);
+
+        camera_button_left = (ImageButton) findViewById(R.id.cameraButtonLeft);
+        camera_button_left.setOnTouchListener(new RepeatListener(
+                CAMERA_BUTTON_INTERVAL,
+                CAMERA_BUTTON_INTERVAL,
+                new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                camera.evaluateJavascript("$($('iframe').contents().find('iframe'))[0].contentWindow.OnPtzMouseLeft()",null);
+            }
+        }));
+        camera_button_left.getBackground().setAlpha(CAMERA_BUTTON_ALPHA);
+
+        camera_button_right = (ImageButton) findViewById(R.id.cameraButtonRight);
+        camera_button_right.setOnTouchListener(new RepeatListener(
+                CAMERA_BUTTON_INTERVAL,
+                CAMERA_BUTTON_INTERVAL,
+                new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                camera.evaluateJavascript("$($('iframe').contents().find('iframe'))[0].contentWindow.OnPtzMouseRight()",null);
+            }
+        }));
+        camera_button_right.getBackground().setAlpha(CAMERA_BUTTON_ALPHA);
     }
 
     private void init_controls(Bundle savedInstanceState) {
@@ -658,7 +735,7 @@ public class MainActivity extends AppCompatActivity {
 
         while(!m_bluetooth_adapter.isEnabled()) {
             try {
-                Thread.sleep(200);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
 
             }
@@ -704,39 +781,74 @@ public class MainActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case RESULT_SETTINGS:
-                updateOnBackFromSettings();
+                updateFromPreferences(true);
+                //if changed theme in settings recreate activity
+                if (settings.getBoolean(getString(R.string.theme_changed_key), false)) {
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                }
                 break;
         }
     }
 
-    private void updateOnBackFromSettings() {
-        camera_url = settings.getString(getString(R.string.camera_url_key), getString(R.string.camera_url_default));
-        String html = "<!DOCTYPE html><html>" +
-                "<head><script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js\"></script></head>" +
-                "<body onload=\"$($('iframe').contents().find('iframe'))[0].contentWindow.signin_snapmotion()\">" +
-                "<iframe src= \"" + camera_url
-                + "\" style=\"position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;\"></iframe></body></html>";
+    private void updateFromPreferences(boolean backFromSettingsPage) {
+        //set zoom according to current orientation
+        try {
+            if (getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
+                camera.setInitialScale(
+                        Integer.parseInt(
+                                settings.getString(
+                                        getString(R.string.camera_zoom_portrait_key),
+                                        getString(R.string.camera_zoom_default)
+                                )
+                        )
+                );
+            } else {
+                camera.setInitialScale(
+                        Integer.parseInt(
+                                settings.getString(
+                                        getString(R.string.camera_zoom_landscape_key),
+                                        getString(R.string.camera_zoom_default)
+                                )
+                        )
+                );
+            }
+        } catch (Exception e) {
+            camera.setInitialScale(Integer.parseInt(getString(R.string.camera_zoom_default)));
+        }
+        final String url_temp = settings.getString(getString(R.string.camera_url_key), getString(R.string.camera_url_default));
+        final String username_temp = settings.getString(
+                getString(R.string.camera_username_key), getString(R.string.camera_username_default)
+        );
+        final String password_temp = settings.getString(
+                getString(R.string.camera_password_key), getString(R.string.camera_password_default)
+        );
+
         camera.setWebViewClient(new WebViewClient() {
             @Override
             public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
-                handler.proceed(
-                        settings.getString(
-                                getString(R.string.camera_username_key), getString(R.string.camera_username_default))
-                        , settings.getString(
-                                getString(R.string.camera_password_key), getString(R.string.camera_password_default))
-                );
+                handler.proceed(username_temp,password_temp);
             }
         });
-        camera.setBackgroundColor(Color.TRANSPARENT);
-        camera.loadDataWithBaseURL(camera_url, html, "text/html", "UTF-8", null);
 
-
-        //if changed theme in settings recreate activity
-        if (settings.getBoolean(getString(R.string.theme_changed_key), false)) {
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
+        //reload camera only if url or username or password changed,
+        // or we're not back from settings (therefore in onCreate)
+        if(!backFromSettingsPage || !url_temp.equals(camera_url) ||
+                !username_temp.equals(camera_username) || !password_temp.equals(camera_password)) {
+            String html = "<!DOCTYPE html><html>" +
+                "<head><script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js\"></script>" +
+                "</head>" +
+                "<body onload=\"$($('iframe').contents().find('iframe'))[0].contentWindow.signin_snapmotion();" +
+                "$(\'html:not(root) body html:not(root) body table input[type=button]\').css(\'display\', \'none\');\">" +
+                "<iframe src= \"" + url_temp
+                + "\" style=\"position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;\"></iframe></body></html>";
+            camera.loadDataWithBaseURL(url_temp, html, "text/html", "UTF-8", null);
         }
+        camera_url = url_temp;
+        camera_username = username_temp;
+        camera_password = password_temp;
+
     }
 
     private class ConnectedThread extends Thread {

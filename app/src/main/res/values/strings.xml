@@ -26,6 +26,8 @@
     <string name="bluetooth_title">Bluetooth</string>
     <string name="paired_devices_title">Paired Devices</string>
     <string name="bluetooth_mac_title">MAC</string>
+    <string name="zoom_portrait_title">Zoom Portrait</string>
+    <string name="zoom_landscape_title">Zoom Landscape</string>
     <!-- Summaries -->
     <string name="paired_devices_summary">Choose from paired devices</string>
     <!-- Keys -->
@@ -37,11 +39,14 @@
     <string name="camera_password_key">cameraPassword</string>
     <string name="theme_changed_key">themeChanged</string>
     <string name="theme_category_key">themeCategory</string>
+    <string name="camera_zoom_landscape_key">cameraZoomLandscape</string>
+    <string name="camera_zoom_portrait_key">cameraZoomPortrait</string>
     <!-- Default Values -->
     <string name="bluetooth_mac_default">98:D3:31:F4:06:76</string>
     <string name="camera_url_default">http://192.168.43.74:81</string>
     <string name="camera_username_default">admin</string>
     <string name="camera_password_default"></string>
+    <string name="camera_zoom_default">0</string>
 
     <string name="no_device">No Device</string>
     <string name="invalid_bt_mac">Invalid Bluetooth MAC Address</string>

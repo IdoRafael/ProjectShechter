@@ -4,11 +4,19 @@
     <style name="AppThemeDark" parent="Theme.AppCompat">
         <item name="settings_drawable">@drawable/ic_settings_white_24dp</item>
         <item name="refresh_drawable">@drawable/ic_refresh_white_24dp</item>
+        <item name="camera_up_drawable">@drawable/ic_keyboard_arrow_up_white_24dp</item>
+        <item name="camera_down_drawable">@drawable/ic_keyboard_arrow_down_white_24dp</item>
+        <item name="camera_left_drawable">@drawable/ic_keyboard_arrow_left_white_24dp</item>
+        <item name="camera_right_drawable">@drawable/ic_keyboard_arrow_right_white_24dp</item>
     </style>
 
     <style name="AppThemeLight" parent="Theme.AppCompat.Light">
         <item name="settings_drawable">@drawable/ic_settings_black_24dp</item>
         <item name="refresh_drawable">@drawable/ic_refresh_black_24dp</item>
+        <item name="camera_up_drawable">@drawable/ic_keyboard_arrow_up_black_24dp</item>
+        <item name="camera_down_drawable">@drawable/ic_keyboard_arrow_down_black_24dp</item>
+        <item name="camera_left_drawable">@drawable/ic_keyboard_arrow_left_black_24dp</item>
+        <item name="camera_right_drawable">@drawable/ic_keyboard_arrow_right_black_24dp</item>
     </style>
 
 </resources>
