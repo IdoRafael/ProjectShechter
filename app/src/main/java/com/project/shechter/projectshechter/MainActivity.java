@@ -43,7 +43,7 @@ import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 public class MainActivity extends AppCompatActivity {
 
     //TODO IDO REMOVE ALL DEBUGS
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     //TODO IDO REMOVE ALL DEBUGS
 
 
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Bluetooth ========================================
     static final String POPUP_IS_ON = "popupIsOnState";
+    static String shech_mac = "98:D3:31:F4:06:76";
     BluetoothAdapter m_bluetooth_adapter;
     ConnectedThread bluetooth_thread;
     boolean popup_is_on = false;
@@ -81,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
             if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
                 if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1)
                         == BluetoothAdapter.STATE_OFF) {
+                    if(bluetooth_thread != null && bluetooth_thread.isConnected()){
+                        bluetooth_thread.cancel();
+                    }
                     connectPopUp();
                 }
             }
@@ -159,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         init_preferences();
+
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
@@ -190,7 +194,10 @@ public class MainActivity extends AppCompatActivity {
         //Handle bluetooth turned off while working
         registerReceiver(mReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
-        if (!popup_is_on && !settings.getBoolean(getString(R.string.theme_changed_key), false) && !connect()) {
+        if (!popup_is_on &&
+                !settings.getBoolean(getString(R.string.theme_changed_key), false) &&
+                !connect()
+                ) {
             connectPopUp();
         }
     }
@@ -199,18 +206,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        if (!DEBUG) {
-            if(bluetooth_thread != null) {
-                bluetooth_thread.cancel();
-            }
-        }
-
         unregisterReceiver(mReceiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        try {
+            if (!DEBUG) {
+                if (bluetooth_thread != null) {
+                    bluetooth_thread.cancel();
+                }
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -251,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             setTheme(R.style.AppThemeLight);
         }
-        //TODO apply or commit?
         settings.edit().putBoolean(getString(R.string.theme_changed_key), false).apply();
     }
 
@@ -741,12 +751,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        String temp_mac = settings.getString(getString(R.string.bluetooth_mac_key), getString(R.string.bluetooth_mac_default));
+        boolean ip_changed = !temp_mac.equals(shech_mac);
+        shech_mac = temp_mac;
+
         if(!DEBUG) {
             try {
-                if(bluetooth_thread == null || !bluetooth_thread.isConnected()) {
+                if(bluetooth_thread == null || !bluetooth_thread.isConnected() || ip_changed) {
+                    if(bluetooth_thread != null && bluetooth_thread.isConnected() && ip_changed){
+                        bluetooth_thread.cancel();
+                    }
                     bluetooth_thread = new ConnectedThread(
                             m_bluetooth_adapter.getRemoteDevice(
-                                    settings.getString(getString(R.string.bluetooth_mac_key), getString(R.string.bluetooth_mac_default))
+                                    shech_mac
                             ).createRfcommSocketToServiceRecord(
                                     UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
                             )

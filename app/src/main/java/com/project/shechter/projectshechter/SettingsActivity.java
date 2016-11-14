@@ -27,13 +27,13 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.dark_theme_key), false)) {
             setTheme(R.style.AppThemeDark);
         } else {
             setTheme(R.style.AppThemeLight);
         }
+
+        super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -72,6 +72,8 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.app_preferences);
+
+            //setRetainInstance(true);
 
             m_bluetooth_adapter = BluetoothAdapter.getDefaultAdapter();
 
