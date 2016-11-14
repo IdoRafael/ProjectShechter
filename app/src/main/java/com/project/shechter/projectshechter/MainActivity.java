@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             if (!DEBUG) {
-                if (bluetooth_thread != null) {
+                if (bluetooth_thread != null && bluetooth_thread.isConnected()) {
                     bluetooth_thread.cancel();
                 }
             }
