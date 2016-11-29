@@ -43,7 +43,7 @@ import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 public class MainActivity extends AppCompatActivity {
 
     //TODO IDO REMOVE ALL DEBUGS
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     //TODO IDO REMOVE ALL DEBUGS
 
 
@@ -855,9 +855,13 @@ public class MainActivity extends AppCompatActivity {
                 !username_temp.equals(camera_username) || !password_temp.equals(camera_password)) {
             String html = "<!DOCTYPE html><html>" +
                 "<head><script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js\"></script>" +
+                "<script>" +
+                "function goToCameraPage() {" +
+                    "$($('iframe').contents().find('iframe'))[0].contentWindow.signin_snapmotion();" +
+                "}" +
+                "</script>" +
                 "</head>" +
-                "<body onload=\"$($('iframe').contents().find('iframe'))[0].contentWindow.signin_snapmotion();" +
-                "$(\'html:not(root) body html:not(root) body table input[type=button]\').css(\'display\', \'none\');\">" +
+                "<body onload=\"goToCameraPage()\">" +
                 "<iframe src= \"" + url_temp
                 + "\" style=\"position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;\"></iframe></body></html>";
             camera.loadDataWithBaseURL(url_temp, html, "text/html", "UTF-8", null);

@@ -28,45 +28,48 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent" />
 
+            <ImageButton
+                android:id="@+id/buttonRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="?attr/refresh_drawable"/>
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:weightSum="5">
-
-                <ImageButton
-                    android:id="@+id/buttonRefresh"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:src="?attr/refresh_drawable"
-                    android:layout_weight="1"/>
-
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
                 <ImageButton
                     android:id="@+id/cameraButtonUp"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:src="?attr/camera_up_drawable"
-                    android:layout_weight="1"/>
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="-10dp"/>
 
-                <ImageButton
-                    android:id="@+id/cameraButtonLeft"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:src="?attr/camera_left_drawable"
-                    android:layout_weight="1"/>
-                <ImageButton
-                    android:id="@+id/cameraButtonRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:src="?attr/camera_right_drawable"
-                    android:layout_weight="1"/>
+                    android:layout_height="wrap_content">
+                    <ImageButton
+                        android:id="@+id/cameraButtonLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="?attr/camera_left_drawable" />
+                    <ImageButton
+                        android:id="@+id/cameraButtonRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="?attr/camera_right_drawable"
+                        android:layout_marginLeft="-5dp"/>
+                </LinearLayout>
 
                 <ImageButton
                     android:id="@+id/cameraButtonDown"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:src="?attr/camera_down_drawable"
-                    android:layout_weight="1"/>
+                    android:layout_marginTop="-10dp"/>
 
             </LinearLayout>
         </FrameLayout>
