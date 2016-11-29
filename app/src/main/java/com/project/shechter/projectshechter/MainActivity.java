@@ -41,10 +41,7 @@ import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    //TODO IDO REMOVE ALL DEBUGS
-    private static final boolean DEBUG = true;
-    //TODO IDO REMOVE ALL DEBUGS
+    private static final boolean DEBUG = false;
 
 
     //Camera ==================================================
